@@ -1,0 +1,8 @@
+# Object files
+*.o
+
+# Executables
+*.exe
+
+# Batch File
+*.bat
