@@ -51,7 +51,7 @@ void GetInput(Coordinate *coord, const int xbound, const int ybound) {
 		char *val1 = strtok(in, ",");
 		int val2 = atoi(strtok(NULL, ",")); //tokenize the input string at the properly placed comma
 		char *emptyval3 = strtok(NULL, ","); //check for any extra comma
-		if (emptyval3 != NULL || val2 < 0 || val1 == NULL || ((int)*val1) - 96 < 0 || ((int)*val1) - 96 > 25){ //make sure val1 is a lowercase character
+		if (emptyval3 != NULL || val2 < 0 || val1 == NULL || ((int)*val1) - 96 < 0 || ((int)*val1) - 96 > 26){ //make sure val1 is a lowercase character
 			puts("values improperly formatted, be sure to use lowercase eg. a,2");
 			goto beginning;
 		}
@@ -101,7 +101,7 @@ int main(){
 	
 	if (aiCount > 1) { //allow the player to not play as long as there is more than one bot
 		do {
-			puts("Do you want to play? (y/n)\n");
+			puts("Do you want to play? (y/n)");
 			GetRawInput(answerBuf, 10);
 		} while (!(*answerBuf == 'y' || *answerBuf == 'n')); //if the first char is y or n
 		*answerBuf == 'y' ? (isUserPlayer = true) : (isUserPlayer = false);
