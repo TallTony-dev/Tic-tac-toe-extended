@@ -1,4 +1,4 @@
-#include "calcmove.h"
+#include "board-algorithms.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
@@ -173,30 +173,12 @@ Coordinate DetermineMove(BoardState *board, enum AiType aiType, int playerNum) {
 			}
 		}
 	}
-		//PRINTWEIGHTS DEBUG
-	for (int y = 0; y < board->ySize; y++) {
-		printf("%d |", (y + 1));
-		for (int x = 0; x < board->xSize; x++) {
-			printf("| %.2f ", weights[x][y]);
-		}
-		printf("|\n");
-	}
-	printf("\n");
 	//change weights based off distance from the edge
 	for (int x = 0; x < xLeng; x++) {
 		for (int y = 0; y < yLeng; y++) {
 			weights[x][y] += (abs((float)(x + 1) - (float)(xLeng + 1) / 2.0F) + abs((float)(y + 1) - (float)(yLeng + 1) / 2.0F)) * edgeDistWeightRatio;
 		}
 	}
-		//PRINTWEIGHTS DEBUG
-	for (int y = 0; y < board->ySize; y++) {
-		printf("%d |", (y + 1));
-		for (int x = 0; x < board->xSize; x++) {
-			printf("| %.2f ", weights[x][y]);
-		}
-		printf("|\n");
-	}
-	printf("\n");
 	
 	//change weights based off being close to player or enemy tiles
 	for (int player = 0; player < playerCount; player++) { //iterate through players
@@ -220,21 +202,6 @@ Coordinate DetermineMove(BoardState *board, enum AiType aiType, int playerNum) {
 			}
 		}
 	}
-	
-	
-	//PRINTWEIGHTS DEBUG
-	for (int y = 0; y < board->ySize; y++) {
-		printf("%d |", (y + 1));
-		for (int x = 0; x < board->xSize; x++) {
-			printf("| %.2f ", weights[x][y]);
-		}
-		printf("|\n");
-	}
-	printf("\n");
-	
-	
-	
-	
 	
 	//find coord with max weight
 	Coordinate toMove = {-1,-1};

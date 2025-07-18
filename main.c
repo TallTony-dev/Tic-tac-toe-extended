@@ -7,7 +7,7 @@
 #define ASSERT_INCLUDED
 #include <assert.h> //header guard because is defined to not have an internal one
 #endif
-#include "calcmove.h"
+#include "board-algorithms.h"
 
 _Static_assert('a' == 97 && 'z' == 122, "Incompatible character representation");  //this version of the keyword is used due to a gcc issue
 //this is true for code page 437 and ascii, but its here just in case and to test static assertions
