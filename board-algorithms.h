@@ -2,6 +2,7 @@ enum AiType {Greedy, Standard};
 enum Ruleset {FourRow, ThreeRow};
 
 #define MAX_RULE_INDEX 1
+#define MAX_AITYPE_INDEX 1
 
 typedef struct boardState BoardState;
 

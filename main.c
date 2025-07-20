@@ -51,7 +51,7 @@ void GetInput(Coordinate *coord, const int xbound, const int ybound) {
 		char *val1 = strtok(in, ",");
 		int val2 = atoi(strtok(NULL, ",")); //tokenize the input string at the properly placed comma
 		char *emptyval3 = strtok(NULL, ","); //check for any extra comma
-		if (emptyval3 != NULL || val2 < 0 || val1 == NULL || ((int)*val1) - 96 < 0 || ((int)*val1) - 96 > 26){ //make sure val1 is a lowercase character
+		if (emptyval3 != NULL || val2 < 0 || val1 == NULL || ((int)*val1) - 96 < 0 || ((int)*val1) - 96 > 17){ //make sure val1 is a lowercase character in range
 			puts("values improperly formatted, be sure to use lowercase eg. a,2");
 			goto beginning;
 		}
@@ -74,7 +74,7 @@ void GetInput(Coordinate *coord, const int xbound, const int ybound) {
 }
 
 int main(){	
-	puts("Welcome to tic tac toen't!\n");
+	puts("Welcome to tic tac toe extended!\n");
 	
 	char *answerBuf = malloc(10 * sizeof(char));//memory to store the output from GetRawInput()
 	//could be a fixed size but I wanted to try basic dynamic allocation
@@ -83,13 +83,13 @@ int main(){
 	bool isUserPlayer;
 	char winner;
 	do {
-		puts("Enter board x dimension (3-26):");
+		puts("Enter board x dimension (3-17):");
 		GetRawInput(answerBuf, 10);
-	} while ((xSize = atoi(answerBuf)) < 3 || atoi(answerBuf) > 26); //loop if oob
+	} while ((xSize = atoi(answerBuf)) < 3 || atoi(answerBuf) > 17); //loop if oob
 	do {
-		puts("Enter board y dimension (3-26):");
+		puts("Enter board y dimension (3-17):");
 		GetRawInput(answerBuf, 10);
-	} while ((ySize = atoi(answerBuf)) < 3 || atoi(answerBuf) > 26); //loop if oob
+	} while ((ySize = atoi(answerBuf)) < 3 || atoi(answerBuf) > 17); //loop if oob
 	do {
 		puts("Choose a win condition!\n1: Four in a row\n2: Three in a row\nAnswer using the corresponding number:");
 		GetRawInput(answerBuf, 10);
@@ -97,7 +97,18 @@ int main(){
 	do {
 		puts("How many AI bots to play? (1-8)\nNote that you must play if there is only one bot");
 		GetRawInput(answerBuf, 10);
-	} while ((aiCount = atoi(answerBuf)) < 1 || ruleset > 8);
+	} while ((aiCount = atoi(answerBuf)) < 1 || aiCount > 8);
+	
+	
+	enum AiType *aiTypes = malloc(sizeof(enum AiType) * aiCount);
+	for (int i = 0; i < aiCount; i++) {
+		do {
+		printf("What type of AI should bot %d have?\n1: Standard\n2: Greedy\nAnswer with just the relevant index.\n", i + 1);
+		GetRawInput(answerBuf, 10);
+		} while (((aiTypes[i] = atoi(answerBuf)) - 1) > MAX_AITYPE_INDEX || aiTypes[i] < 0);
+	}
+	
+	
 	
 	if (aiCount > 1) { //allow the player to not play as long as there is more than one bot
 		do {
@@ -106,6 +117,7 @@ int main(){
 		} while (!(*answerBuf == 'y' || *answerBuf == 'n')); //if the first char is y or n
 		*answerBuf == 'y' ? (isUserPlayer = true) : (isUserPlayer = false);
 	}
+	
 	else isUserPlayer = true;
 	free(answerBuf); //again, just for learning
 	
@@ -124,14 +136,14 @@ int main(){
 		}
 		
 		for (int i = isUserPlayer ? 1 : 0; i < (aiCount + (isUserPlayer ? 1 : 0)); i++) { //start at player 1 instead of 0 if human is playing
-			Coordinate aiMove = DetermineMove(board, Standard, i);
-			if (!AddToBoard(board, aiMove, i)) {
-				printf("It's a draw :P");
-				return EXIT_SUCCESS;
+			Coordinate aiMove = DetermineMove(board, i - (isUserPlayer ? 1 : 0), i);
+			if (aiMove.x == -1 || !AddToBoard(board, aiMove, i)) { //check for if the ai can't find a move or if it chose invalid location
+				break;
 			}
 		}
 		
 	} while ((winner = IsWinner(board)) == '\0'); //check for winning or tying state
+	free(aiTypes);
 	PrintBoardState(board);
 	if (winner != '?')
 		printf("The winner is %c!", winner); //announce winner
