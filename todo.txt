@@ -1,8 +1,9 @@
 TODO: 
 - Implement other ai types (greedy, etc.) (use a variadic func?)
-- Implement ai type which calls an general purpose llm to determine next move
+- Implement other rule sets
 
 STRETCH:
-- Implement other rule sets
-- Make algorithms reduce weight if a win condition can't be met with a line in a direction (check for blocking and edges)
 - Evolution simulation
+- Make algorithms reduce weight if a win condition can't be met with a line in a direction (check for blocking and edges)
+- Implement ai type which calls an general purpose llm to determine next move
+
